@@ -12,6 +12,7 @@ public class AimsCLI
         boolean flag = true;
         while (flag)
         {
+            Scanner sc = new Scanner(System.in);
             Data.resetData();
             System.out.println("Welcome to AIMS portal");
             System.out.println("1. Register new User");

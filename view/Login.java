@@ -10,10 +10,12 @@ import java.util.*;
 import com.google.gson.Gson;
 import model.Data;
 import model.User;
+import utility.HttpCalls;
 
 public class Login
 {
     static Scanner sc = new Scanner(System.in);
+    Gson gson = new Gson();
 
     public void loginExistingUser () throws URISyntaxException, IOException, InterruptedException {
         String userName, password;
@@ -25,17 +27,7 @@ public class Login
         User user = new User();
         user.setUserName(userName);
 
-        Gson gson = new Gson();
-        String postBody = gson.toJson(user);
-
-        HttpRequest postRequest = HttpRequest.newBuilder()
-                .uri(new URI("http://localhost:8080/checkUser"))
-                .setHeader("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(postBody))
-                .build();
-
-        HttpClient http = HttpClient.newHttpClient();
-        HttpResponse<String> postResponse = http.send(postRequest, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> postResponse = HttpCalls.postCall(user, "http://localhost:8080/checkUser");
         User resUser = gson.fromJson(postResponse.body(), User.class);
 
         if (resUser == null)
@@ -72,33 +64,17 @@ public class Login
         System.out.println("Select category\n1.Student \n2.Faculty \n3.Academics Office\n");
         category = sc.nextInt();
         sc.nextLine();
-
         System.out.println("Enter first name");
         firstName = sc.nextLine();
-
         System.out.println("Enter last name");
         lastName = sc.nextLine();
-
         System.out.println("Enter user name");
         userName = sc.nextLine();
-
         System.out.println("Enter password (at least 4 length)");
         password = sc.nextLine();
 
         User newUser = new User(userName, firstName, lastName, category, password);
-        Gson gson = new Gson();
-        String postBody = gson.toJson(newUser);
-
-//        System.out.println(postBody);
-
-        HttpRequest postRequest = HttpRequest.newBuilder()
-                .uri(new URI("http://localhost:8080/registerUser"))
-                .setHeader("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(postBody))
-                .build();
-
-        HttpClient http = HttpClient.newHttpClient();
-        HttpResponse<String> postResponse = http.send(postRequest, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> postResponse = HttpCalls.postCall(newUser, "http://localhost:8080/registerUser");
 
         if (postResponse.statusCode() == 200)
         {
