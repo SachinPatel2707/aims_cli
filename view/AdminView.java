@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import model.Course;
 import model.Data;
 import model.Prerequisite;
+import utility.Common;
 import utility.HttpCalls;
 import utility.Navigation;
 
@@ -78,11 +79,14 @@ public class AdminView {
     }
 
     public void viewTranscript () throws URISyntaxException, IOException, InterruptedException {
-        Navigation.navigateTo("viewStudentDetails");
+        Navigation.navigateTo("viewStudents");
+        Navigation.navigateTo("adminActions");
     }
 
     public void downloadTranscript () throws URISyntaxException, IOException, InterruptedException {
-        Navigation.navigateTo("viewStudentDetails");
+        System.out.println("Enter StudentId");
+        String user = sc.next();
+        Data.setOutputPath(Common.generateTranscript(user));
         System.out.println("\nTranscript is in file : " + Data.getOutputPath());
         Navigation.navigateTo("adminActions");
     }
