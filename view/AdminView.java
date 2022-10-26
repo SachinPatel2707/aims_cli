@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import model.Course;
 import model.Data;
 import model.Prerequisite;
+import model.User;
 import utility.Common;
 import utility.HttpCalls;
 import utility.Navigation;
@@ -88,6 +89,25 @@ public class AdminView {
         String user = sc.next();
         Data.setOutputPath(Common.generateTranscript(user));
         System.out.println("\nTranscript is in file : " + Data.getOutputPath());
+        Navigation.navigateTo("adminActions");
+    }
+
+    public void updateAdmin() throws URISyntaxException, IOException, InterruptedException {
+        User user = new User();
+        user.setUserName(Data.getUserName());
+        user = gson.fromJson(HttpCalls.postCall(user, "http://localhost:8080/getUser").body(), User.class);
+        System.out.println("\nEnter space separated values in order (enter empty string for fields you don't want to update)");
+        System.out.println("\nfirstName lastName password department yearOfJoining");
+        sc.nextLine();
+        String[] temp = sc.nextLine().split(" ");
+
+        user.setFirstName(temp[0].equals("") ? user.getFirstName() : temp[0]);
+        user.setLastName(temp[1].equals("") ? user.getLastName() : temp[1]);
+        user.setPassword(temp[2].equals("") ? user.getPassword() : temp[2]);
+        user.setDepartment(temp[3].equals("") ? user.getDepartment() : temp[3]);
+        user.setYearOfEnrollment(temp[4].equals("") ? user.getYearOfEnrollment() : temp[4]);
+
+        HttpCalls.postCall(user, "http://localhost:8080/updateUser");
         Navigation.navigateTo("adminActions");
     }
 
