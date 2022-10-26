@@ -1,13 +1,12 @@
 package view;
 
 public class StudentView {
-    public static void initMenu ()
+    public void viewStudentDetails ()
     {
-        boolean flag = true;
-        while (flag)
-        {
-            System.out.println("student");
-            flag = false;
-        }
+
+    }
+    public void initMenu ()
+    {
+
     }
 }

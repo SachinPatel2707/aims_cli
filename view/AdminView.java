@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import model.Course;
 import model.Prerequisite;
 import utility.HttpCalls;
+import utility.Navigation;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -40,7 +41,7 @@ public class AdminView {
         }
     }
 
-    private static void addCatalog() throws URISyntaxException, IOException, InterruptedException {
+    public void addCatalog() throws URISyntaxException, IOException, InterruptedException {
         System.out.println("Enter course code");
         String code = sc.next();
         System.out.println("Enter course name");
@@ -72,26 +73,33 @@ public class AdminView {
         {
             System.out.println("Course added to catalog successfully\n");
         }
+        Navigation.navigateTo("adminActions");
     }
 
-    public static void initMenu () throws URISyntaxException, IOException, InterruptedException {
-        boolean flag = true;
-        while (flag)
+    public void viewTranscript ()
+    {
+
+    }
+
+    public void downloadTranscript ()
+    {
+
+    }
+
+    public void initMenu () throws URISyntaxException, IOException, InterruptedException {
+        System.out.println("\n1.Add a course to catalog \n2.View transcript \n3.Download transcript");
+        Integer ch = sc.nextInt();
+        switch(ch)
         {
-            System.out.println("1.Add a course to catalog \n2.View transcript \n3.Download transcript");
-            Integer ch = sc.nextInt();
-            switch(ch)
-            {
-                case 1:
-                    addCatalog();
-                    break;
-                case 2:
-                    flag = false;
-                    break;
-                case 3:
-                    flag = false;
-                    break;
-            }
+            case 1:
+                Navigation.navigateTo("addCatalog");
+                break;
+            case 2:
+                Navigation.navigateTo("viewTranscript");
+                break;
+            case 3:
+                Navigation.navigateTo("downloadTranscript");
+                break;
         }
     }
 }

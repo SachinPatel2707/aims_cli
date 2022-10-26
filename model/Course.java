@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Course {
     String code;
     String name;
@@ -7,6 +10,8 @@ public class Course {
     Integer l;
     Integer t;
     Integer p;
+    List<String> preReq;
+    String offeredBy;
 
     public Course () {}
 
@@ -17,6 +22,23 @@ public class Course {
         this.l = l;
         this.t = t;
         this.p = p;
+        preReq = new ArrayList<>();
+    }
+
+    public String getOfferedBy() {
+        return offeredBy;
+    }
+
+    public void setOfferedBy(String offeredBy) {
+        this.offeredBy = offeredBy;
+    }
+
+    public List<String> getPreReq() {
+        return preReq;
+    }
+
+    public void setPreReq(List<String> preReq) {
+        this.preReq = preReq;
     }
 
     public String getCode() {

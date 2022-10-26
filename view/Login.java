@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import model.Data;
 import model.User;
 import utility.HttpCalls;
+import utility.Navigation;
 
 public class Login
 {
@@ -45,13 +46,13 @@ public class Login
             switch(resUser.getCategory())
             {
                 case 1:
-                    StudentView.initMenu();
+                    Navigation.navigateTo("studentActions");
                     break;
                 case 2:
-                    FacultyView.initMenu();
+                    Navigation.navigateTo("facultyActions");
                     break;
                 case 3:
-                    AdminView.initMenu();
+                    Navigation.navigateTo("adminActions");
                     break;
             }
         }
@@ -80,5 +81,6 @@ public class Login
         {
             System.out.println("Registration successful\n");
         }
+        Navigation.navigateTo("home");
     }
 }

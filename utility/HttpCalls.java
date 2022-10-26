@@ -24,4 +24,15 @@ public class HttpCalls {
         HttpResponse<String> postResponse = http.send(postRequest, HttpResponse.BodyHandlers.ofString());
         return postResponse;
     }
+
+    public static HttpResponse<String> getCall (String uri) throws URISyntaxException, IOException, InterruptedException {
+        HttpRequest getRequest = HttpRequest.newBuilder()
+                .uri(new URI(uri))
+                .GET()
+                .build();
+
+        HttpClient http = HttpClient.newHttpClient();
+        HttpResponse<String> getResponse = http.send(getRequest, HttpResponse.BodyHandlers.ofString());
+        return getResponse;
+    }
 }
