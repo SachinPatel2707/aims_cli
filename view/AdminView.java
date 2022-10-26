@@ -3,6 +3,7 @@ package view;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.Course;
+import model.Data;
 import model.Prerequisite;
 import utility.HttpCalls;
 import utility.Navigation;
@@ -76,30 +77,24 @@ public class AdminView {
         Navigation.navigateTo("adminActions");
     }
 
-    public void viewTranscript ()
-    {
-
+    public void viewTranscript () throws URISyntaxException, IOException, InterruptedException {
+        Navigation.navigateTo("viewStudentDetails");
     }
 
-    public void downloadTranscript ()
-    {
-
+    public void downloadTranscript () throws URISyntaxException, IOException, InterruptedException {
+        Navigation.navigateTo("viewStudentDetails");
+        System.out.println("\nTranscript is in file : " + Data.getOutputPath());
+        Navigation.navigateTo("adminActions");
     }
 
     public void initMenu () throws URISyntaxException, IOException, InterruptedException {
-        System.out.println("\n1.Add a course to catalog \n2.View transcript \n3.Download transcript");
-        Integer ch = sc.nextInt();
-        switch(ch)
-        {
-            case 1:
-                Navigation.navigateTo("addCatalog");
-                break;
-            case 2:
-                Navigation.navigateTo("viewTranscript");
-                break;
-            case 3:
-                Navigation.navigateTo("downloadTranscript");
-                break;
+        System.out.println("\n1.Add a course to catalog \n2.View transcript \n3.Download transcript \n4.Logout");
+        int ch = sc.nextInt();
+        switch (ch) {
+            case 1 -> Navigation.navigateTo("addCatalog");
+            case 2 -> Navigation.navigateTo("viewTranscript");
+            case 3 -> Navigation.navigateTo("downloadTranscript");
+            case 4 -> Navigation.navigateTo("home");
         }
     }
 }

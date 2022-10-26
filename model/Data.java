@@ -5,6 +5,24 @@ public class Data
     private static String userName;
     private static String token;
     private static Integer category;
+    private static Integer curSem = 3;
+    private static String outputPath;
+
+    public static Integer getCurSem() {
+        return curSem;
+    }
+
+    public static void setCurSem(Integer curSem) {
+        Data.curSem = curSem;
+    }
+
+    public static String getOutputPath() {
+        return outputPath;
+    }
+
+    public static void setOutputPath(String outputPath) {
+        Data.outputPath = outputPath;
+    }
 
     public static String getUserName() {
         return userName;

@@ -2,17 +2,18 @@ package view;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import model.Course;
-import model.Data;
-import model.Prerequisite;
+import model.*;
 import utility.Common;
 import utility.HttpCalls;
 import utility.Navigation;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,9 +33,28 @@ public class FacultyView {
         }
     }
 
-    public void uploadMarks ()
-    {
+    public void uploadMarks () throws IOException, URISyntaxException, InterruptedException {
+        System.out.println("Enter the course code");
+        String code = sc.next();
+        System.out.println("Enter the path of input file");
+        String path = sc.next();
 
+        File file = new File(path);
+        Scanner fRead = new Scanner(file);
+        List<Enrollment> fdata = new ArrayList<>();
+
+        while(fRead.hasNextLine())
+        {
+            String[] temp = fRead.nextLine().split(",");
+            Enrollment en = new Enrollment();
+            en.setCourseCode(code);
+            en.setsId(temp[0]);
+            en.setGrade(Float.parseFloat(temp[1]));
+            fdata.add(en);
+        }
+
+        HttpCalls.postCall(fdata, "http://localhost:8080/updateGrade");
+        Navigation.navigateTo("facultyActions");
     }
 
     public boolean checkIfRegistered(Course course) throws URISyntaxException, IOException, InterruptedException {
@@ -99,12 +119,15 @@ public class FacultyView {
     }
 
     public void initMenu () throws URISyntaxException, IOException, InterruptedException {
-        System.out.println("\n1.View student details \n2.Register/Deregister course \n3.Upload marks");
+        System.out.println("\n1.View student grades \n2.Register/Deregister course \n3.Upload marks \n4.View student list \n5.View students currently enrolled in a course \n6.Logout");
         int ch = sc.nextInt();
         switch (ch) {
             case 1 -> Navigation.navigateTo("viewStudents");
             case 2 -> Navigation.navigateTo("offerCourse");
             case 3 -> Navigation.navigateTo("uploadMarks");
+            case 4 -> Navigation.navigateTo("viewStudentsByCourse");
+            case 5 -> Navigation.navigateTo("viewCurStudentsByCourse");
+            case 6 -> Navigation.navigateTo("home");
         }
     }
 }

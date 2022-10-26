@@ -34,26 +34,21 @@ public class Login
         if (resUser == null)
         {
             System.out.println("User not found");
+            Navigation.navigateTo("home");
         }
         else if (!resUser.getPassword().equals(password))
         {
             System.out.println("Incorrect password");
+            Navigation.navigateTo("home");
         }
         else
         {
             Data.setUserName(resUser.getUserName());
             Data.setCategory(resUser.getCategory());
-            switch(resUser.getCategory())
-            {
-                case 1:
-                    Navigation.navigateTo("studentActions");
-                    break;
-                case 2:
-                    Navigation.navigateTo("facultyActions");
-                    break;
-                case 3:
-                    Navigation.navigateTo("adminActions");
-                    break;
+            switch (resUser.getCategory()) {
+                case 1 -> Navigation.navigateTo("studentActions");
+                case 2 -> Navigation.navigateTo("facultyActions");
+                case 3 -> Navigation.navigateTo("adminActions");
             }
         }
     }
