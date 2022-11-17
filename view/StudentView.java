@@ -200,13 +200,14 @@ public class StudentView {
     }
 
     public void initMenu () throws URISyntaxException, IOException, InterruptedException {
-        System.out.println("\n1.View my Grade Sheet \n2.Enroll in course \n3.UnEnroll from course \n4.Logout");
+        System.out.println("\n1.View my Grade Sheet \n2.Enroll in course \n3.UnEnroll from course \n4.Update Profile \n5.Logout");
         int ch = sc.nextInt();
         switch (ch) {
             case 1 -> Navigation.navigateTo("viewStudents");
             case 2 -> Navigation.navigateTo("enroll");
             case 3 -> Navigation.navigateTo("unEnroll");
-            case 4 -> Navigation.navigateTo("home");
+            case 4 -> Navigation.navigateTo("updateProfile");
+            case 5 -> Navigation.navigateTo("home");
         }
     }
 }

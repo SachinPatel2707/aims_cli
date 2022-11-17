@@ -112,13 +112,14 @@ public class AdminView {
     }
 
     public void initMenu () throws URISyntaxException, IOException, InterruptedException {
-        System.out.println("\n1.Add a course to catalog \n2.View transcript \n3.Download transcript \n4.Logout");
+        System.out.println("\n1.Add a course to catalog \n2.View transcript \n3.Download transcript \n4.Update Profile \n5.Logout");
         int ch = sc.nextInt();
         switch (ch) {
             case 1 -> Navigation.navigateTo("addCatalog");
             case 2 -> Navigation.navigateTo("viewTranscript");
             case 3 -> Navigation.navigateTo("downloadTranscript");
-            case 4 -> Navigation.navigateTo("home");
+            case 4 -> Navigation.navigateTo("updateProfile");
+            case 5 -> Navigation.navigateTo("home");
         }
     }
 }

@@ -119,7 +119,7 @@ public class FacultyView {
     }
 
     public void initMenu () throws URISyntaxException, IOException, InterruptedException {
-        System.out.println("\n1.View student grades \n2.Register/Deregister course \n3.Upload marks \n4.View student list \n5.View students currently enrolled in a course \n6.Logout");
+        System.out.println("\n1.View student grades \n2.Register/Deregister course \n3.Upload marks \n4.View student list \n5.View students currently enrolled in a course \n6.Update Profile \n7.Logout");
         int ch = sc.nextInt();
         switch (ch) {
             case 1 -> Navigation.navigateTo("viewStudents");
@@ -127,7 +127,8 @@ public class FacultyView {
             case 3 -> Navigation.navigateTo("uploadMarks");
             case 4 -> Navigation.navigateTo("viewStudentsByCourse");
             case 5 -> Navigation.navigateTo("viewCurStudentsByCourse");
-            case 6 -> Navigation.navigateTo("home");
+            case 6 -> Navigation.navigateTo("updateProfile");
+            case 7 -> Navigation.navigateTo("home");
         }
     }
 }

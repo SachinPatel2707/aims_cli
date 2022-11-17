@@ -54,7 +54,7 @@ public class Login
     }
 
     public void registerNewUser () throws URISyntaxException, IOException, InterruptedException {
-        String userName, firstName, lastName, password;
+        String userName, firstName, lastName, password, department = null, yoe = null;
         Integer category;
 
         System.out.println("Select category\n1.Student \n2.Faculty \n3.Academics Office\n");
@@ -66,10 +66,17 @@ public class Login
         lastName = sc.nextLine();
         System.out.println("Enter user name");
         userName = sc.nextLine();
+        if (category == 1)
+        {
+            System.out.println("Enter department");
+            department = sc.nextLine();
+            System.out.println("Enter year of enrollment");
+            yoe = sc.nextLine();
+        }
         System.out.println("Enter password (at least 4 length)");
         password = sc.nextLine();
 
-        User newUser = new User(userName, firstName, lastName, category, password);
+        User newUser = new User(userName, firstName, lastName, category, password, department, yoe);
         HttpResponse<String> postResponse = HttpCalls.postCall(newUser, "http://localhost:8080/registerUser");
 
         if (postResponse.statusCode() == 200)

@@ -15,6 +15,7 @@ import java.util.*;
 
 public class Common {
     static Gson gson = new Gson();
+    static Scanner sc = new Scanner(System.in);
 
     public static void printCourses (Course[] courses)
     {
@@ -123,6 +124,17 @@ public class Common {
         {
             if(e.getSemester() <= sem)
                 arr.add(e);
+        }
+        if (arr.size() == 0)
+        {
+            User u = new User();
+            u.setUserName(user);
+            u = gson.fromJson(HttpCalls.postCall(u, "http://localhost:8080/getUser").body(), User.class);
+            u.setCgpa((float) 0);
+            u.setTotalCreditsEarned((float) 0);
+
+            HttpCalls.postCall(u, "http://localhost:8080/updateUser");
+            return 0;
         }
         Map<String, Float> grades = new HashMap<>();
         for (Enrollment e : arr)
@@ -275,6 +287,45 @@ public class Common {
             {
                 calculateCgpa(u.getUserName(), Data.getCurSem());
             }
+        }
+    }
+
+    public static void updateProfile() throws URISyntaxException, IOException, InterruptedException {
+        User u = new User();
+        u.setUserName(Data.getUserName());
+        u = gson.fromJson(HttpCalls.postCall(u, "http://localhost:8080/getUser").body(), User.class);
+
+        System.out.format("%-20s%-20s%-20s%-20s%-20s\n", "UserName ", "FirstName ", "LastName ", "Department ", "Password ");
+        System.out.format("%-20s%-20s%-20s%-20s%-20s\n", u.getUserName(), u.getFirstName(), u.getLastName(), u.getDepartment(), u.getPassword());
+        System.out.println();
+        System.out.println("1.Update firstname \n2.Update lastname \n3.Update department \n4.Update password \n5.Back");
+        int ch = sc.nextInt();
+        sc.nextLine();
+        if (ch == 5)
+        {
+            String goTo = "";
+            if (Data.getCategory() == 1)
+                goTo = "studentActions";
+            else if (Data.getCategory() == 2)
+                goTo = "facultyActions";
+            else if (Data.getCategory() == 3)
+                goTo = "adminActions";
+            Navigation.navigateTo(goTo);
+        }
+        else
+        {
+            System.out.println("Enter new info\n");
+            String info = sc.nextLine();
+
+            switch(ch)
+            {
+                case 1 -> u.setFirstName(info);
+                case 2 -> u.setLastName(info);
+                case 3 -> u.setDepartment(info);
+                case 4 -> u.setPassword(info);
+            }
+            HttpCalls.postCall(u, "http://localhost:8080/updateUser");
+            updateProfile();
         }
     }
 }

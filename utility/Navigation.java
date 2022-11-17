@@ -30,7 +30,7 @@ public class Navigation {
             case "addCatalog" -> admin.addCatalog();
             case "viewTranscript" -> admin.viewTranscript();
             case "downloadTranscript" -> admin.downloadTranscript();
-            case "updateAdmin" -> admin.updateAdmin();
+            case "updateProfile" -> Common.updateProfile();
         }
     }
 }

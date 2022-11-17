@@ -8,18 +8,20 @@ public class User {
     private Integer category;
     private String password;
     private String yearOfEnrollment;
-    private String Department;
+    private String department;
     private Float cgpa;
     private Float totalCreditsEarned;
 
     public User () {}
 
-    public User(String userName, String firstName, String lastName, Integer category, String password) {
+    public User(String userName, String firstName, String lastName, Integer category, String password, String department, String yearOfEnrollment) {
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.category = category;
         this.password = password;
+        this.department = department;
+        this.yearOfEnrollment = yearOfEnrollment;
     }
 
     public User(Integer id, String userName, String firstName, String lastName, Integer category, String password, String yearOfEnrollment, String department, Float cgpa, Float totalCreditsEarned) {
@@ -30,7 +32,7 @@ public class User {
         this.category = category;
         this.password = password;
         this.yearOfEnrollment = yearOfEnrollment;
-        Department = department;
+        this.department = department;
         this.cgpa = cgpa;
         this.totalCreditsEarned = totalCreditsEarned;
     }
@@ -52,11 +54,11 @@ public class User {
     }
 
     public String getDepartment() {
-        return Department;
+        return this.department;
     }
 
     public void setDepartment(String department) {
-        Department = department;
+        this.department = department;
     }
 
     public Float getCgpa() {
