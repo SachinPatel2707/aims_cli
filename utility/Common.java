@@ -265,4 +265,16 @@ public class Common {
         }
         fRead.close();
     }
+
+    public static void updateCGPA() throws URISyntaxException, IOException, InterruptedException {
+        User[] users = gson.fromJson(HttpCalls.getCall("http://localhost:8080/getAllUsers").body(), User[].class);
+
+        for (User u : users)
+        {
+            if (u.getCategory() == 1)
+            {
+                calculateCgpa(u.getUserName(), Data.getCurSem());
+            }
+        }
+    }
 }

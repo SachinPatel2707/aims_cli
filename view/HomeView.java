@@ -1,6 +1,7 @@
 package view;
 
 import model.Data;
+import utility.Common;
 import utility.Navigation;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ public class HomeView {
         System.out.println("2. Login");
         System.out.println("3. Exit");
         Integer ch = sc.nextInt();
+        Common.updateCGPA();
 
         switch(ch)
         {
