@@ -11,9 +11,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class StudentView {
     static Scanner sc = new Scanner(System.in);
@@ -65,7 +63,7 @@ public class StudentView {
             Enrollment[] enArr = gson.fromJson(response.body(), Enrollment[].class);
             if (enArr.length == 0)
                 return false;
-            else if (enArr[0].getGrade() < 4 || pre.getMinCgpa() > cgpa)
+            else if (enArr[0].getGrade() < pre.getMinCgpa())
                 return false;
         }
         return true;
@@ -97,6 +95,85 @@ public class StudentView {
         Navigation.navigateTo(goTo);
     }
 
+    public boolean checkCreditLimit(Enrollment en) throws URISyntaxException, IOException, InterruptedException {
+        HttpResponse<String> res = HttpCalls.postCall(en, "http://localhost:8080/getAllEnrollmentByStudent");
+        Enrollment[] temp = gson.fromJson(res.body(), Enrollment[].class);
+        List<Enrollment> arr = new ArrayList<>();
+        int sem = en.getSemester();
+        if (sem == 1)
+        {
+            return true;
+        }
+        else if (sem == 2)
+        {
+            for (Enrollment e : temp)
+            {
+                if(e.getSemester() == sem-1)
+                    arr.add(e);
+            }
+        }
+        else
+        {
+            for (Enrollment e : temp)
+            {
+                if(e.getSemester() == sem-1 || e.getSemester() == sem-2)
+                    arr.add(e);
+            }
+        }
+        Map<String, Float> grades = new HashMap<>();
+        for (Enrollment e : arr)
+        {
+            if (e.getGrade() != null)
+            {
+                grades.put(e.getCourseCode(), e.getGrade());
+            }
+        }
+
+        Course[] courses = gson.fromJson((HttpCalls.getCall("http://localhost:8080/getAllCourses")).body(), Course[].class);
+        Map<String, Float> credits = new HashMap<>();
+        Float totalCredits = 0.0f, maxCredit = 0.0f;
+        for (Course c : courses)
+        {
+            credits.put(c.getCode(), c.getCredits().floatValue());
+        }
+
+        for(Map.Entry<String, Float> entry : grades.entrySet())
+        {
+            totalCredits += credits.get(entry.getKey());
+        }
+
+        if (sem == 2)
+        {
+            maxCredit = (totalCredits * (float)1.25);
+        }
+        else
+        {
+            maxCredit = (totalCredits / 2) * (float) 1.25;
+        }
+
+        arr.clear();
+        grades.clear();
+        totalCredits = 0.0f;
+        for (Enrollment e : temp)
+        {
+            if(e.getSemester() == sem)
+                arr.add(e);
+        }
+        for (Enrollment e : arr)
+        {
+            grades.put(e.getCourseCode(), e.getGrade());
+        }
+        grades.put(en.getCourseCode(), 0.0f);
+        for(Map.Entry<String, Float> entry : grades.entrySet())
+        {
+            totalCredits += credits.get(entry.getKey());
+        }
+
+        if (totalCredits > maxCredit)
+            return false;
+        return true;
+    }
+
     public void enroll() throws URISyntaxException, IOException, InterruptedException {
         Course[] availCourses = Common.viewCurSemCourses();
         User student = new User();
@@ -109,14 +186,21 @@ public class StudentView {
 
         if(validateCourse(en.getCourseCode(), availCourses))
         {
-            // add cgpa check here as well
             if(validatePrerequisites(student, en.getCourseCode()))
             {
-                HttpCalls.postCall(en, "http://localhost:8080/enroll");
+                if (checkCreditLimit(en))
+                {
+                    HttpCalls.postCall(en, "http://localhost:8080/enroll");
+                    System.out.println("Registration successful\n");
+                }
+                else
+                {
+                    System.out.println("Registration unsuccessful. Credit limit exceeded.\n");
+                }
             }
             else
             {
-                System.out.println("Registration unsuccessful. Prerequisites not met");
+                System.out.println("Registration unsuccessful. Prerequisites not met.");
             }
         }
         Navigation.navigateTo("studentActions");
